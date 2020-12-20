@@ -1,5 +1,6 @@
 package views;
 import controllers.Controller;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.print.attribute.IntegerSyntax;
 import java.util.*;
@@ -117,7 +118,33 @@ public class CLI {
                     break;
 
                 case "CC":
-                    
+                    int clientId = Integer.parseInt(commands[1]);
+                    if(!controller.hasClient(clientId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+
+                    else{
+                        System.out.println(controller.getClient(clientId).getName());
+                        System.out.println(controller.getClient(clientId).getManager().getName());
+
+                        System.out.println("Items:");
+                        List<Item> items = controller.getClient(clientId).getItems();
+                        for(Item item: items){
+                            System.out.println("  " + item.getId() + " (" + item.getQuantity() + ") " + " [" + item.getPermissions() + "] " + item.getName());
+                        }
+
+                        System.out.println("Depósitos:");
+                        List<Deposit> deposits = controller.getClient(clientId).getDeposits();
+                        for(Deposit deposit: deposits){
+                            System.out.println("  " + deposit.getId() + " (" + deposit.getLocationName() + ") ");
+                        }
+
+                        System.out.println("Entregas:");
+                        List<Delivery> deliveries = controller.getClient(clientId).getDeliveries();
+                        for(Delivery delivery: deliveries){
+                            System.out.println("  " + delivery.getId() + " (" + delivery.getLocationName() + ") ");
+                        }
+                    }
                     break;
 
                 case "CI":
