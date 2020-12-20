@@ -6,13 +6,13 @@ import java.util.*;
 
 public class CLI {
     public CLI(){
-        Controller controller = new Controller();
+        Controller controller = null;
         Scanner scanner = new Scanner(System.in);
         while(true) {
             String line = scanner.nextLine();
             if (line == "") return;
 
-            String commands[] = line.split(" ");
+            String[] commands = line.split(" ");
 
             switch (commands[0]) {
                 case "RF":
@@ -25,17 +25,17 @@ public class CLI {
                     }
 
                     if(!controller.hasCategory(category)){
-
+                        System.out.println("Categoria inexistente.");
                     }
                     else if(!controller.hasPermission(category, permission)){
-
+                        System.out.println("Permissão inexistente.");
                     }
                     else if(controller.hasEmployerName(category)){
-                        
+                        System.out.println("Funcionário existente.");
                     }
                     else{
-                        controller.registerEmployer(category, permission, employerName);
-                        System.out.println("Funcionário registado com o identificador ", controller.getEmployer(employerName).getId());
+                        int employerId = controller.registerEmployer(category, permission, employerName);
+                        System.out.println("Funcionário registado com o identificador " + employerId);
                     }
                     break;
 
@@ -48,8 +48,8 @@ public class CLI {
                         System.out.println("Cliente Existente.");
                     }
                     else{
-                        controller.registerClient(clientName);
-                        System.out.println("Cliente registado com o identificador ", controller.getClient(clientName).getId());
+                        int clientId = controller.registerClient(clientName);
+                        System.out.println("Cliente registado com o identificador " + clientId);
                     }
                     break;
 
@@ -66,7 +66,7 @@ public class CLI {
                             boolean valid = true;
                             if (line == "") controller.registerItem("N");
 
-                            String commands2[] = line2.split(", ");
+                            String[] commands2 = line2.split(", ");
 
                             for(int i=0; i<commands2.length; i++){
                                 if(!controller.validPermission(commands2[i])){
@@ -75,7 +75,8 @@ public class CLI {
                                 }
                             }
                             if(valid){
-                               controller.registerItem();
+                               int itemId = controller.registerItem(clientId, itemName, commands2);
+                               System.out.println("Item registado para o cliente " + clientId + " com o identificador " + itemId);
                             }
                             break;
                         }
@@ -88,51 +89,28 @@ public class CLI {
                         System.out.println("Local existente.");
                     }
                     else{
-                        controller.registerLocation(locationName);
-                        System.out.println("Local registado com o identificador", controller.getLocation(locationName).getId());
+                        int locationId = controller.registerLocation(locationName);
+                        System.out.println("Local registado com o identificador" + locationId);
                     }
                     break;
 
                 case "RD":
-                    String clientId = commands[1];
-                    String locationId = commands[2];
-                    Scanner scanner2 = new Scanner(System.in);
+                    int clientId = Integer.parseInt(commands[1]);
+                    int locationId = Integer.parseInt(commands[2]);
+                    String[] firstEntry = {commands[1], commands[2]};
+                    if(controller.hasLocationId(locationId)){
+                        System.out.println("Local inexistente.");
+                    }
+                    else if(!controller.hasClientID(clientId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+                    else{
+                        Scanner scanner2 = new Scanner(System.in);
+                        while(true) {
 
-                    while(true){
-                        String line2 = scanner2.nextLine();
-                        boolean valid = true;
-                        //if (line == "") return;
-
-                        String commands2[] = line2.split(" ");
-
-                        for(int i=0; i< commands2.length; i++){
-                            if(!controller.hasEmployerId(commands2[i])){
-                                System.out.println("Funcionário inexistente.");
-                                valid = false;
-                                break;
-                            }
                         }
-                        if(valid) {
-                            Scanner scanner3 = new Scanner(System.in);
-                            while (true) {
-                                String line3 = scanner3.nextLine();
-                                if (line3 == "") break;
-                                String commands3[] = line3.split(" ");
-                                int itemId = Integer.parseInt((commands3[0]));
-                                int quantity = Integer.parseInt(commands3[1]);
-                                if(!controller.hasItem(itemId)){
-                                    System.out.println("Item inexistente.");
-                                }
-                                else if(!controller.hasQuantity(commands3[1])){
-                                    System.out.println("Quantidade inexistente.");
-                                }
-                                else{
-                                    controller.registerDeposit();
-                                    System.out.println("Depósito registado com o identificador", controller.getDepositId(//nem sei tbh));
-                                }
-                            }
-                        }
-                        break;
+                    }
+
                     break;
 
                 case "RE":
@@ -164,7 +142,7 @@ public class CLI {
                     else{
                         //chamar funçao de ler
                         System.out.println("Ficheiro lido com sucesso.");
-                }
+                    }
                     break;
 
                 default:

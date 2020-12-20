@@ -1,7 +1,10 @@
 package controllers;
 
-public class Controller {
-    public Controller(){
+public interface Controller {
 
-    }
+    boolean hasCategory(String category);
+
+    boolean hasPermission(String category, String permission);
+
+
 }
