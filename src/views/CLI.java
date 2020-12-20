@@ -34,13 +34,16 @@ public class CLI {
                         
                     }
                     else{
-                        call controller.something();
+                        controller.registerEmployer(category, permission, employerName);
                         System.out.println("Funcionário registado com o identificador ", controller.getEmployer(employerName).getId());
                     }
                     break;
 
                 case "RC":
-                    String clientName = commands[1];
+                    String clientName = "";
+                    for(int i=1; i<commands.length; i++){
+                        clientName += commands[i] + " ";
+                    }
                     if(controller.hasClient(clientName)){
                         System.out.println("Cliente Existente.");
                     }
@@ -51,15 +54,31 @@ public class CLI {
                     break;
 
                 case "RI":
-                    Integer clientId = commands[1];             //tem de ser String?
+                    int clientId = Integer.parseInt(commands[1]);
                     String itemName = commands[2];
-                    if(!controller.hasClient(clientId)){
+                    if(!controller.hasClientID(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
                     else{
-                        //new line, ler input
-                        //if siglaPermissao in controller.singlasPermissao{ registar e sout "item registado..."}
-                        //else{ sout "permissao invalida"}
+                        Scanner scanner2 = new Scanner(System.in);
+                        while(true) {
+                            String line2 = scanner2.nextLine();
+                            boolean valid = true;
+                            if (line == "") controller.registerItem("N");
+
+                            String commands2[] = line2.split(", ");
+
+                            for(int i=0; i<commands2.length; i++){
+                                if(!controller.validPermission(commands2[i])){
+                                    System.out.println("Permissão inválida.");
+                                    break;
+                                }
+                            }
+                            if(valid){
+                               controller.registerItem();
+                            }
+                            break;
+                        }
                     }
                     break;
 
