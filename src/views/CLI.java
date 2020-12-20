@@ -14,7 +14,26 @@ public class CLI {
 
             switch (commands[0]) {
                 case "RF":
-                    break;
+                    String category = commands[1];
+                    String permission = commands[2];
+                    //String name = commands[3];
+                    String employerName = "";
+                    for(int i=3; i<commands.length; i++){
+                        employerName += commands[i] + " ";
+                    }
+
+                    if(!controller.hasCategory(category)){
+
+                    }
+                    else if(!controller.hasPermission(category, permission)){
+
+                    }
+                    else if(controller.hasEmployerName(category)){
+                        
+                    }
+                    else{
+
+                    }
                 case "RC":
                     break;
                 case "RI":
