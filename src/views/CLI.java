@@ -75,13 +75,52 @@ public class CLI {
                     break;
 
                 case "RD":
+                    String clientId = commands[1];
+                    String locationId = commands[2];
+                    Scanner scanner2 = new Scanner(System.in);
 
+                    while(true){
+                        String line2 = scanner2.nextLine();
+                        boolean valid = true;
+                        //if (line == "") return;
+
+                        String commands2[] = line2.split(" ");
+
+                        for(int i=0; i< commands2.length; i++){
+                            if(!controller.hasEmployerId(commands2[i])){
+                                System.out.println("Funcionário inexistente.");
+                                valid = false;
+                                break;
+                            }
+                        }
+                        if(valid) {
+                            Scanner scanner3 = new Scanner(System.in);
+                            while (true) {
+                                String line3 = scanner3.nextLine();
+                                if (line3 == "") break;
+                                String commands3[] = line3.split(" ");
+                                int itemId = Integer.parseInt((commands3[0]));
+                                int quantity = Integer.parseInt(commands3[1]);
+                                if(!controller.hasItem(itemId)){
+                                    System.out.println("Item inexistente.");
+                                }
+                                else if(!controller.hasQuantity(commands3[1])){
+                                    System.out.println("Quantidade inexistente.");
+                                }
+                                else{
+                                    controller.registerDeposit();
+                                    System.out.println("Depósito registado com o identificador", controller.getDepositId(//nem sei tbh));
+                                }
+                            }
+                        }
+                        break;
                     break;
 
                 case "RE":
                     break;
 
                 case "CC":
+                    
                     break;
 
                 case "CI":
