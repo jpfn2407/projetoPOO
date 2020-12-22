@@ -21,4 +21,10 @@ public class Client {
     public int getId(String name){
         return this.id;
     }
+
+    public Client getManager() {
+    }
+
+    public List<Deposit> getDeposits() {
+    }
 }

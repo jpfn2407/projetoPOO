@@ -119,6 +119,7 @@ public class CLI {
 
                 case "CC":
                     int clientId = Integer.parseInt(commands[1]);
+
                     if(!controller.hasClient(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
@@ -148,6 +149,17 @@ public class CLI {
                     break;
 
                 case "CI":
+                    int clientId = Integer.parseInt(commands[1]);
+                    int itemId = Integer.parseInt(commands[2]);
+
+                    if(!controller.hasClient(clientId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+
+                    if(!controller.hasItem(itemId)){
+
+                    }
+
                     break;
 
                 case "CE":
@@ -158,17 +170,17 @@ public class CLI {
 
                 case "G":
 
-                    String fileName = commands[1];
-                    //chamar a funçao de gravar
-                    System.out.println("Ficheiro gravado com sucesso.");
+                String fileName = commands[1];
+                //chamar a funçao de gravar
+                System.out.println("Ficheiro gravado com sucesso.");
                     break;
 
                 case "L":
                     String fileName = commands[1];
                     //if(fileName not in saveFolder){ sout "Ficheiro inexistente."}
                     else{
-                        //chamar funçao de ler
-                        System.out.println("Ficheiro lido com sucesso.");
+                    //chamar funçao de ler
+                    System.out.println("Ficheiro lido com sucesso.");
                     }
                     break;
 
