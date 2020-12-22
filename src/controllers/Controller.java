@@ -6,5 +6,5 @@ public interface Controller {
 
     boolean hasPermission(String category, String permission);
 
-
+    boolean hasEmployeeName(String category);
 }

@@ -1,8 +1,6 @@
 package views;
 import controllers.Controller;
-import org.w3c.dom.ls.LSOutput;
 
-import javax.print.attribute.IntegerSyntax;
 import java.util.*;
 
 public class CLI {
@@ -20,9 +18,9 @@ public class CLI {
                     String category = commands[1];
                     String permission = commands[2];
                     //String name = commands[3];
-                    String employerName = "";
+                    String employeeName = "";
                     for(int i=3; i<commands.length; i++){
-                        employerName += commands[i] + " ";
+                        employeeName += commands[i] + " ";
                     }
 
                     if(!controller.hasCategory(category)){
@@ -31,12 +29,12 @@ public class CLI {
                     else if(!controller.hasPermission(category, permission)){
                         System.out.println("Permissão inexistente.");
                     }
-                    else if(controller.hasEmployerName(category)){
+                    else if(controller.hasEmployeeName(category)){
                         System.out.println("Funcionário existente.");
                     }
                     else{
-                        int employerId = controller.registerEmployer(category, permission, employerName);
-                        System.out.println("Funcionário registado com o identificador " + employerId);
+                        int employeeId = controller.registerEmployee(category, permission, employeeName);
+                        System.out.println("Funcionário registado com o identificador " + employeeId);
                     }
                     break;
 
@@ -57,7 +55,7 @@ public class CLI {
                 case "RI":
                     int clientId = Integer.parseInt(commands[1]);
                     String itemName = commands[2];
-                    if(!controller.hasClientID(clientId)){
+                    if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
                     else{
@@ -98,19 +96,73 @@ public class CLI {
                 case "RD":
                     int clientId = Integer.parseInt(commands[1]);
                     int locationId = Integer.parseInt(commands[2]);
-                    String[] firstEntry = {commands[1], commands[2]};
+                    String[] idArray = {commands[1], commands[2]};
+                    /*if(controller.hasLocationId(locationId)){
+                        System.out.println("Local inexistente.");
+                    }
+                    else if(!controller.hasClientId(clientId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+                    else{*/
+                    boolean isValidId = true;
+                    int numberOfDrivers = 0;
+                    Scanner scanner2 = new Scanner(System.in);
+                    String line2 = scanner2.nextLine();
+
+                    String[] commands2 = line2.split(" ");
+
+                    for(int i=0; i< commands2.length; i++){
+                        if(!controller.hasEmployeeId(commands2[i])){
+                            isValidId = false;
+                        }
+                    }
+
+                    numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
+
+                    /*if(isValidId && (numberOfDrivers == 1)) {*/
+                    String[] employeeArray = commands2;
+
+                    boolean hasIndicatedItem = true;
+
+                    Scanner scanner3 = new Scanner(System.in);
+                    ArrayList<String[]> itemArrayList = new ArrayList<String[]>();
+                    while (true) {
+                        String line3 = scanner3.nextLine();
+                        if (line3 == "") break;
+
+                        String[] commands3 = line3.split(" ");
+                        if(!controller.hasItemId(commands3[0])){
+                            hasIndicatedItem = false;
+                        }
+                        itemArrayList.add(commands3);
+                    }
+
                     if(controller.hasLocationId(locationId)){
                         System.out.println("Local inexistente.");
                     }
-                    else if(!controller.hasClientID(clientId)){
+                    else if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
-                    else{
-                        Scanner scanner2 = new Scanner(System.in);
-                        while(true) {
-
-                        }
+                    else if(numberOfDrivers > 1 || !isValidId) {
+                        System.out.println("Funcionário inexistente.");
                     }
+                    else if(!controller.driverHasPermissionsForItem(employeeArray, itemArrayList) || (numberOfDrivers == 1)){
+                        System.out.println("Condutor sem permissões.");
+                    }
+                    else  if(!controller.loadersHavePermissionsForItem()){
+                        System.out.println("Carregador sem permissões.");
+                    }
+                    else if(!hasIndicatedItem){
+                        System.out.println("Item inexistente.");
+                    }
+                    else{
+                        int depositId = controller.registerItemDeposit(idArray, employeeArray, itemArrayList);
+                        System.out.println("Depósito registado com o identificador " + depositId);
+                    }
+
+                    /*else {
+                        System.out.println("Funcionário inexistente.");
+                    }*/
 
                     break;
 
