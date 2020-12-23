@@ -218,20 +218,23 @@ public class CLI {
                     break;
 
                 case "CF":
+                    String employeeName = commands[1];
+
                     break;
 
                 case "G":
-
-                String fileName = commands[1];
-                //chamar a funçao de gravar
-                System.out.println("Ficheiro gravado com sucesso.");
+                    String fileName = commands[1];
+                    controler.save(fileName);
+                    System.out.println("Ficheiro gravado com sucesso.");
                     break;
 
                 case "L":
                     String fileName = commands[1];
-                    //if(fileName not in saveFolder){ sout "Ficheiro inexistente."}
+                    if(!controller.save(fileName)){
+                        System.out.println("Ficheiro inexistente.");
+                    }
                     else{
-                    //chamar funçao de ler
+                    controller.load(fileName);
                     System.out.println("Ficheiro lido com sucesso.");
                     }
                     break;
