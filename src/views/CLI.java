@@ -137,19 +137,19 @@ public class CLI {
                         itemArrayList.add(commands3);
                     }
 
-                    if(controller.hasLocationId(locationId)){
-                        System.out.println("Local inexistente.");
-                    }
-                    else if(!controller.hasClientId(clientId)){
+                    if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
-                    else if(numberOfDrivers > 1 || !isValidId) {
+                    else if(controller.hasLocationId(locationId)){
+                        System.out.println("Local inexistente.");
+                    }
+                    else if(numberOfDrivers > 1 || !isValidId){
                         System.out.println("Funcionário inexistente.");
                     }
                     else if(!controller.driverHasPermissionsForItem(employeeArray, itemArrayList) || (numberOfDrivers == 1)){
                         System.out.println("Condutor sem permissões.");
                     }
-                    else  if(!controller.loadersHavePermissionsForItem()){
+                    else  if(!controller.loadersHavePermissionsForItem(employeeArray, itemArrayList)){
                         System.out.println("Carregador sem permissões.");
                     }
                     else if(!hasIndicatedItem){
@@ -167,6 +167,74 @@ public class CLI {
                     break;
 
                 case "RE":
+                    int clientId = Integer.parseInt(commands[1]);
+                    int locationId = Integer.parseInt(commands[2]);
+                    String[] idArray = {commands[1], commands[2]};
+
+                    boolean isValidId = true;
+                    int numberOfDrivers = 0;
+                    Scanner scanner2 = new Scanner(System.in);
+                    String line2 = scanner2.nextLine();
+
+                    String[] commands2 = line2.split(" ");
+
+                    for(int i=0; i< commands2.length; i++){
+                        if(!controller.hasEmployeeId(commands2[i])){
+                            isValidId = false;
+                        }
+                    }
+
+                    String[] employeeArray = commands2;
+
+                    boolean hasIndicatedItem = true;
+                    boolean hasIndicatedItemQuantity = true;
+
+                    Scanner scanner3 = new Scanner(System.in);
+                    ArrayList<String[]> itemArrayList = new ArrayList<String[]>();
+                    while (true) {
+                        String line3 = scanner3.nextLine();
+                        if (line3 == "") break;
+
+                        String[] commands3 = line3.split(" ");
+
+                        if(!controller.hasItem(clientId, commands3[0])){
+                            hasIndicatedItem = false;
+                        }
+                        else if(!controller.hasItemQuantity(clientId, commands3[0], commands3[1])){
+                            hasIndicatedItemQuantity = false;
+                        }
+
+                        itemArrayList.add(commands3);
+                    }
+
+                    numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
+
+                    if(!controller.hasClientId(clientId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+                    else if(controller.hasLocationId(locationId)){
+                        System.out.println("Local inexistente.");
+                    }
+                    else if(numberOfDrivers > 1 || !isValidId){
+                        System.out.println("Funcionário inexistente.");
+                    }
+                    else if(!controller.driverHasPermissionsForItem(employeeArray, itemArrayList) || (numberOfDrivers == 1)){
+                        System.out.println("Condutor sem permissões.");
+                    }
+                    else  if(!controller.loadersHavePermissionsForItem(employeeArray, itemArrayList)){
+                        System.out.println("Carregador sem permissões.");
+                    }
+                    else if(!hasIndicatedItem){
+                        System.out.println("Item inexistente.");
+                    }
+                    else if(!hasIndicatedItemQuantity){
+                        System.out.println("Quantidade insuficiente.");
+                    }
+                    else{
+                        int deliveryId = controller.registerItemDelivery(idArray, employeeArray, itemArrayList);
+                        System.out.println("Depósito registado com o identificador " + deliveryId);
+                    }
+
                     break;
 
                 case "CC":
@@ -200,12 +268,87 @@ public class CLI {
                     break;
 
                 case "CI":
+                    int clientId = Integer.parseInt(commands[1]);
+                    int itemId = Integer.parseInt(commands[2]);
+                    if(!controller.hasClient(clientId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+                    else if(!controller.hasItem(clientId, itemId)) {
+                        System.out.println("Item inexistente.");
+                    }
+                    else{
+                        Item item = controller.getClient(clientId).getItem(itemId);
+
+                        System.out.println(item.getQuantity() + " [" + item.getPermissions() + "] " + item.getName());
+
+                        System.out.println("Depósitos:");
+                        List<Deposit> deposits = controller.getClient(clientId).getDeposits();
+                        for(Deposit deposit: deposits){
+                            if(deposit.hasItem(itemId)) {
+                                System.out.println("  " + deposit.getId() + " " + deposit.getItemQuantity(itemId));
+                            }
+                        }
+
+                        System.out.println("Entregas:");
+                        List<Delivery> deliveries = controller.getClient(clientId).getDeliveries();
+                        for(Delivery delivery: deliveries){
+                            if(delivery.hasItem(itemId)) {
+                                System.out.println("  " + delivery.getId() + " " + delivery.getItemQuantity(itemId));
+                            }
+                        }
+                    }
+
                     break;
 
                 case "CE":
+                    int clientId = Integer.parseInt(commands[1]);
+                    int deliveryId = Integer.parseInt(commands[2]);
+                    if(!controller.hasClient(clientId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+                    else if(!controller.getClient(clientId).hasDelivery(deliveryId)){
+                        System.out.println("Entrega inexistente.");
+                    }
+                    else{
+                        Delivery delivery = controller.getClient(clientId).getDelivery(deliveryId);
+                        System.out.println(delivery.getDriverPermission() + " " + delivery.getDriverName());
+
+                        List<Loader> loaders = delivery.getLoaders();
+                        for(Loader loader: loaders){
+                            System.out.println("  " + loader.getPermissions() + " " + loader.getName());
+                        }
+
+                        List<Item> items = delivery.getItems();
+                        for(Item item: items){
+                            System.out.println("  " + item.getId() + " " + item.getQuantity() + " " + item.getName());
+                        }
+                    }
+
                     break;
 
                 case "CF":
+                    int employeeId = Integer.parseInt(commands[1]);
+                    if(!controller.hasEmployee(employeeId)){
+                        System.out.println("Cliente inexistente.");
+                    }
+                    else{
+                        System.out.println(controller.getEmployee(employeeId).getName());
+                        System.out.println(controller.getEmployee(employeeId).getCategory());
+                        System.out.println(controller.getEmployee(employeeId).getPermissions());
+
+                        System.out.println("Depósitos:");
+                        List<Deposit> deposits = controller.getEmployee(employeeId).getDeposits();
+                        for(Deposit deposit: deposits){
+                            System.out.println("  " + deposit.getClientId() + " " + deposit.getId() + " " + deposit.getLocationName() + " " + deposit.getClientName());
+                        }
+
+                        System.out.println("Entregas:");
+                        List<Delivery> deliveries = controller.getEmployee(employeeId).getDeliveries();
+                        for(Delivery delivery: deliveries){
+                            System.out.println("  " + delivery.getClientId() + " " + delivery.getId() + " " + delivery.getLocationName() + " " + delivery.getClientName());
+                        }
+                    }
+
                     break;
 
                 case "G":
