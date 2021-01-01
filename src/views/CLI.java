@@ -39,12 +39,19 @@ public class CLI {
                     break;
 
                 case "RC":
+                    int employeeId = Integer.parseInt(commands[1]));
                     String clientName = "";
-                    for(int i=1; i<commands.length; i++){
+                    for(int i=2; i<commands.length; i++){
                         clientName += commands[i] + " ";
                     }
-                    if(controller.hasClient(clientName)){
-                        System.out.println("Cliente Existente.");
+                    if(!controller.hasEmployeeId(employeeId)){
+                        System.out.println("Funcionário inexistente.");
+                    }
+                    else if(controller.getEmployee(employeeId).getCategory() != "Gestor"){
+                        System.out.println("Funcionario incorreto.");
+                    }
+                    else if(controller.hasClientName(clientName)){
+                        System.out.println("Cliente existente.");
                     }
                     else{
                         int clientId = controller.registerClient(clientName);
@@ -63,7 +70,10 @@ public class CLI {
                         while(true) {
                             String line2 = scanner2.nextLine();
                             boolean valid = true;
-                            if (line == "") controller.registerItem("N");
+                            if (line == "") {
+                                String[] normal = {"N"};
+                                controller.registerItem(clientId, itemName, normal);
+                            }
 
                             String[] commands2 = line2.split(", ");
 
@@ -112,7 +122,7 @@ public class CLI {
                     String[] commands2 = line2.split(" ");
 
                     for(int i=0; i< commands2.length; i++){
-                        if(!controller.hasEmployeeId(commands2[i])){
+                        if(!controller.hasEmployeeId(Integer.parseInt(commands2[i]))){
                             isValidId = false;
                         }
                     }
@@ -131,7 +141,7 @@ public class CLI {
                         if (line3 == "") break;
 
                         String[] commands3 = line3.split(" ");
-                        if(!controller.hasItemId(commands3[0])){
+                        if(!controller.hasItemId(Integer.parseInt(commands3[0]))){
                             hasIndicatedItem = false;
                         }
                         itemArrayList.add(commands3);
@@ -146,14 +156,14 @@ public class CLI {
                     else if(numberOfDrivers > 1 || !isValidId){
                         System.out.println("Funcionário inexistente.");
                     }
+                    else if(!hasIndicatedItem){
+                        System.out.println("Item inexistente.");
+                    }
                     else if(!controller.driverHasPermissionsForItem(employeeArray, itemArrayList) || (numberOfDrivers == 1)){
                         System.out.println("Condutor sem permissões.");
                     }
                     else  if(!controller.loadersHavePermissionsForItem(employeeArray, itemArrayList)){
                         System.out.println("Carregador sem permissões.");
-                    }
-                    else if(!hasIndicatedItem){
-                        System.out.println("Item inexistente.");
                     }
                     else{
                         int depositId = controller.registerItemDeposit(idArray, employeeArray, itemArrayList);
@@ -179,7 +189,7 @@ public class CLI {
                     String[] commands2 = line2.split(" ");
 
                     for(int i=0; i< commands2.length; i++){
-                        if(!controller.hasEmployeeId(commands2[i])){
+                        if(!controller.hasEmployeeId(Integer.parseInt(commands2[i]))){
                             isValidId = false;
                         }
                     }
@@ -197,10 +207,10 @@ public class CLI {
 
                         String[] commands3 = line3.split(" ");
 
-                        if(!controller.hasItem(clientId, commands3[0])){
+                        if(!controller.hasItem(clientId, Integer.parseInt(commands3[0]))){
                             hasIndicatedItem = false;
                         }
-                        else if(!controller.hasItemQuantity(clientId, commands3[0], commands3[1])){
+                        else if(!controller.hasItemQuantity(clientId, Integer.parseInt(commands3[0]), commands3[1])){
                             hasIndicatedItemQuantity = false;
                         }
 
@@ -240,7 +250,7 @@ public class CLI {
                 case "CC":
                     int clientId = Integer.parseInt(commands[1]);
 
-                    if(!controller.hasClient(clientId)){
+                    if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
 
@@ -272,7 +282,7 @@ public class CLI {
                     int clientId = Integer.parseInt(commands[1]);
                     int itemId = Integer.parseInt(commands[2]);
 
-                    if(!controller.hasClient(clientId)){
+                    if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
                     else if(!controller.hasItem(clientId, itemId)) {
@@ -286,7 +296,7 @@ public class CLI {
                         System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getClient(clientId).getDeposits();
                         for(Deposit deposit: deposits){
-                            if(deposit.hasItem(itemId)) {
+                            if(deposit.hasItem(clientId, itemId)) {
                                 System.out.println("  " + deposit.getId() + " " + deposit.getItemQuantity(itemId));
                             }
                         }
@@ -294,7 +304,7 @@ public class CLI {
                         System.out.println("Entregas:");
                         List<Delivery> deliveries = controller.getClient(clientId).getDeliveries();
                         for(Delivery delivery: deliveries){
-                            if(delivery.hasItem(itemId)) {
+                            if(delivery.hasItem(clientId, itemId)) {
                                 System.out.println("  " + delivery.getId() + " " + delivery.getItemQuantity(itemId));
                             }
                         }
@@ -305,7 +315,7 @@ public class CLI {
                 case "CE":
                     int clientId = Integer.parseInt(commands[1]);
                     int deliveryId = Integer.parseInt(commands[2]);
-                    if(!controller.hasClient(clientId)){
+                    if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
                     else if(!controller.getClient(clientId).hasDelivery(deliveryId)){
@@ -355,17 +365,17 @@ public class CLI {
 
                 case "G":
                     String fileName = commands[1];
-                    controler.save(fileName);
+                    controller.saveFile(fileName);
                     System.out.println("Ficheiro gravado com sucesso.");
                     break;
 
                 case "L":
                     String fileName = commands[1];
-                    if(!controller.save(fileName)){
+                    if(!controller.saveFile(fileName)){
                         System.out.println("Ficheiro inexistente.");
                     }
                     else{
-                    controller.load(fileName);
+                    controller.loadFile(fileName);
                     System.out.println("Ficheiro lido com sucesso.");
                     }
                     break;
