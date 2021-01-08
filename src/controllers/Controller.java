@@ -21,7 +21,7 @@ public interface Controller {
 
     boolean hasClientName(String clientName);
 
-    int registerClient(String clientName);
+    int registerClient(int employeeId, String clientName);
 
     boolean hasClientId(int clientId);
 

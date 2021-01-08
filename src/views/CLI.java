@@ -1,7 +1,7 @@
 package views;
 import controllers.Controller;
 import controllers.ControllerClass;
-
+import models.transport.*;
 import java.util.*;
 
 public class CLI {
@@ -39,7 +39,7 @@ public class CLI {
                     }
                     break;
 
-                /*case "RC":
+                case "RC":
                     int employeeId = Integer.parseInt(commands[1]);
                     String clientName = "";
                     for(int i=2; i<commands.length; i++){
@@ -48,18 +48,20 @@ public class CLI {
                     if(!controller.hasEmployeeId(employeeId)){
                         System.out.println("Funcionário inexistente.");
                     }
-                    else if(controller.getEmployee(employeeId).getCategory() != "Gestor"){
+                    else if(!controller.getEmployee(employeeId).getCategory().equals("Gestor")){
                         System.out.println("Funcionario incorreto.");
                     }
                     else if(controller.hasClientName(clientName)){
                         System.out.println("Cliente existente.");
                     }
                     else{
-                        int clientId = controller.registerClient(clientName);
+                        int clientId = controller.registerClient(employeeId, clientName);
                         System.out.println("Cliente registado com o identificador " + clientId);
                     }
                     break;
 
+
+                /*
                 case "RI":
                     int clientId = Integer.parseInt(commands[1]);
                     String itemName = commands[2];
@@ -247,7 +249,7 @@ public class CLI {
                     }
 
                     break;
-
+                */
                 case "CC":
                     int clientId = Integer.parseInt(commands[1]);
 
@@ -278,6 +280,8 @@ public class CLI {
                         }
                     }
                     break;
+
+                 /*
 
                 case "CI":
                     int clientId = Integer.parseInt(commands[1]);
@@ -340,9 +344,9 @@ public class CLI {
                     break;
                 */
                 case "CF":
-                    int employeeId = Integer.parseInt(commands[1]);
-                    if(!controller.hasEmployee(employeeId)){
-                        System.out.println("Cliente inexistente.");
+                    employeeId = Integer.parseInt(commands[1]);
+                    if(!controller.hasEmployeeId(employeeId)){
+                        System.out.println("Funcionário inexistente.");
                     }
                     else{
                         System.out.println(controller.getEmployee(employeeId).getName());
@@ -351,14 +355,18 @@ public class CLI {
 
                         System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getEmployee(employeeId).getDeposits();
-                        for(Deposit deposit: deposits){
-                            System.out.println("  " + deposit.getClientId() + " " + deposit.getId() + " " + deposit.getLocationName() + " " + deposit.getClientName());
+                        if(deposits != null) {
+                            for (Deposit deposit : deposits) {
+                                //System.out.println("  " + deposit.getClientId() + " " + deposit.getId() + " " + deposit.getLocationName() + " " + deposit.getClientName());
+                            }
                         }
 
                         System.out.println("Entregas:");
                         List<Delivery> deliveries = controller.getEmployee(employeeId).getDeliveries();
-                        for(Delivery delivery: deliveries){
-                            System.out.println("  " + delivery.getClientId() + " " + delivery.getId() + " " + delivery.getLocationName() + " " + delivery.getClientName());
+                        if(deliveries != null) {
+                            for (Delivery delivery : deliveries) {
+                                //System.out.println("  " + delivery.getClientId() + " " + delivery.getId() + " " + delivery.getLocationName() + " " + delivery.getClientName());
+                            }
                         }
                     }
 

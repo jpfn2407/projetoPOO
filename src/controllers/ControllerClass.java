@@ -2,6 +2,8 @@ package controllers;
 import models.*;
 import models.client.Client;
 import models.employee.Employee;
+import models.employee.Manager;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -33,16 +35,30 @@ public class ControllerClass implements Controller, Serializable {
         return this.employeesList.registerEmployee(category, permission, employeeName);
     }
 
-    public boolean hasClientName(String clientName) {
-        return false;
+    public boolean hasEmployeeId(int employeeId) {
+        return this.employeesList.hasId(employeeId);
     }
 
-    public int registerClient(String clientName) {
-        return 0;
+    public Employee getEmployee(int employeeId) {
+        return this.employeesList.getEmployee(employeeId);
+    }
+
+    public boolean hasClientName(String clientName) {
+        return this.clientsList.hasClientName(clientName);
+    }
+
+    public int registerClient(int employeeId, String clientName) {
+        int id = this.clientsList.registerClient((Manager)getEmployee(employeeId), clientName);
+        this.employeesList.associateClient(employeeId, this.clientsList.getClient(id));
+        return id;
     }
 
     public boolean hasClientId(int clientId) {
-        return false;
+        return this.clientsList.hasId(clientId);
+    }
+
+    public Client getClient(int clientId) {
+        return this.clientsList.getClient(clientId);
     }
 
     public int registerItem(int clientId, String itemName, String[] commands2) {
@@ -59,10 +75,6 @@ public class ControllerClass implements Controller, Serializable {
 
     public int registerLocation(String locationName) {
         return 0;
-    }
-
-    public boolean hasEmployeeId(int s) {
-        return false;
     }
 
     public int getNumberOfDriversInThisArray(String[] commands2) {
@@ -99,13 +111,5 @@ public class ControllerClass implements Controller, Serializable {
 
     public int registerItemDelivery(String[] idArray, String[] employeeArray, ArrayList<String[]> itemArrayList) {
         return 0;
-    }
-
-    public Client getClient(int clientId) {
-        return null;
-    }
-
-    public Employee getEmployee(int employeeId) {
-        return null;
     }
 }
