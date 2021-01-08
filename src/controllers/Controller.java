@@ -3,6 +3,10 @@ package controllers;
 import javax.print.attribute.Attribute;
 import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.TypeVariable;
+import models.*;
+import models.client.Client;
+import models.employee.Employee;
+
 import java.util.ArrayList;
 
 public interface Controller {
@@ -11,7 +15,7 @@ public interface Controller {
 
     boolean hasPermission(String category, String permission);
 
-    boolean hasEmployeeName(String category);
+    boolean hasEmployeeName(String category, String employeeName);
 
     int registerEmployee(String category, String permission, String employeeName);
 
