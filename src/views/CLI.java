@@ -1,11 +1,12 @@
 package views;
 import controllers.Controller;
+import controllers.ControllerClass;
 
 import java.util.*;
 
 public class CLI {
     public CLI(){
-        Controller controller = null;
+        ControllerClass controller = new ControllerClass();
         Scanner scanner = new Scanner(System.in);
         while(true) {
             String line = scanner.nextLine();
@@ -29,7 +30,7 @@ public class CLI {
                     else if(!controller.hasPermission(category, permission)){
                         System.out.println("Permissão inexistente.");
                     }
-                    else if(controller.hasEmployeeName(category)){
+                    else if(controller.hasEmployeeName(category, employeeName)){
                         System.out.println("Funcionário existente.");
                     }
                     else{
@@ -38,8 +39,8 @@ public class CLI {
                     }
                     break;
 
-                case "RC":
-                    int employeeId = Integer.parseInt(commands[1]));
+                /*case "RC":
+                    int employeeId = Integer.parseInt(commands[1]);
                     String clientName = "";
                     for(int i=2; i<commands.length; i++){
                         clientName += commands[i] + " ";
@@ -107,13 +108,13 @@ public class CLI {
                     int clientId = Integer.parseInt(commands[1]);
                     int locationId = Integer.parseInt(commands[2]);
                     String[] idArray = {commands[1], commands[2]};
-                    /*if(controller.hasLocationId(locationId)){
+                    *//*if(controller.hasLocationId(locationId)){
                         System.out.println("Local inexistente.");
                     }
                     else if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
-                    else{*/
+                    else{*//*
                     boolean isValidId = true;
                     int numberOfDrivers = 0;
                     Scanner scanner2 = new Scanner(System.in);
@@ -129,7 +130,7 @@ public class CLI {
 
                     numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
 
-                    /*if(isValidId && (numberOfDrivers == 1)) {*/
+                    *//*if(isValidId && (numberOfDrivers == 1)) {*//*
                     String[] employeeArray = commands2;
 
                     boolean hasIndicatedItem = true;
@@ -170,9 +171,9 @@ public class CLI {
                         System.out.println("Depósito registado com o identificador " + depositId);
                     }
 
-                    /*else {
+                    *//*else {
                         System.out.println("Funcionário inexistente.");
-                    }*/
+                    }*//*
 
                     break;
 
@@ -337,7 +338,7 @@ public class CLI {
                     }
 
                     break;
-
+                */
                 case "CF":
                     int employeeId = Integer.parseInt(commands[1]);
                     if(!controller.hasEmployee(employeeId)){
@@ -362,7 +363,7 @@ public class CLI {
                     }
 
                     break;
-
+                /*
                 case "G":
                     String fileName = commands[1];
                     controller.saveFile(fileName);
@@ -378,7 +379,7 @@ public class CLI {
                     controller.loadFile(fileName);
                     System.out.println("Ficheiro lido com sucesso.");
                     }
-                    break;
+                    break;*/
 
                 default:
                     System.out.println("Instrução Inválida.");

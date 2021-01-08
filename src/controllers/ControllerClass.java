@@ -1,5 +1,7 @@
 package controllers;
 import models.*;
+import models.client.Client;
+import models.employee.Employee;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -20,15 +22,15 @@ public class ControllerClass implements Controller, Serializable {
     }
 
     public boolean hasPermission(String category, String permission) {
-        return false;
+        return this.employeesList.hasPermission(category, permission);
     }
 
-    public boolean hasEmployeeName(String category) {
-        return false;
+    public boolean hasEmployeeName(String category, String employeeName) {
+        return this.employeesList.hasEmployeeName(category, employeeName);
     }
 
     public int registerEmployee(String category, String permission, String employeeName) {
-        return 0;
+        return this.employeesList.registerEmployee(category, permission, employeeName);
     }
 
     public boolean hasClientName(String clientName) {
