@@ -1,4 +1,5 @@
 package models;
+import models.client.Client;
 import models.employee.*;
 import java.util.*;
 
@@ -78,5 +79,26 @@ public class EmployeesList {
             this.managers.put(this.lastId, new Manager(this.lastId, employeeName, category, permission));
         }
         return this.lastId;
+    }
+
+    public boolean hasId(int employeeId) {
+        return (this.loaders.containsKey(employeeId) || this.drivers.containsKey(employeeId) || this.managers.containsKey(employeeId));
+    }
+
+    public void associateClient(int employeeId, Client client){
+        this.managers.get(employeeId).associateClient(client);
+    }
+
+    public Employee getEmployee(int employeeId) {
+        if(this.drivers.containsKey(employeeId)){
+            return this.drivers.get(employeeId);
+        }
+        else if(this.loaders.containsKey(employeeId)){
+            return this.loaders.get(employeeId);
+        }
+        else if(this.managers.containsKey(employeeId)){
+            return this.managers.get(employeeId);
+        }
+        return null;
     }
 }

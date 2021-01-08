@@ -1,5 +1,10 @@
 package models.employee;
 
+import models.client.Client;
+import models.transport.Delivery;
+import models.transport.Deposit;
+import java.util.*;
+
 public class Employee {
     private Integer id;
     private String name;
@@ -25,7 +30,18 @@ public class Employee {
         return this.category;
     }
 
-    public String getPermission() {
+    public String getPermissions() {
         return this.permission;
     }
+
+    //TODO adicionar lista de deposits ao construtor
+    public List<Deposit> getDeposits() {
+        return null;
+    }
+
+    //TODO adicionar lista de deliveries ao construtor
+    public List<Delivery> getDeliveries() {
+        return null;
+    }
+
 }
