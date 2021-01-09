@@ -1,9 +1,11 @@
 package models;
 import models.client.Client;
 import models.employee.*;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class EmployeesList {
+public class EmployeesList implements Serializable {
 
     private Map<Integer, Driver> drivers;
     private Map<Integer, Loader> loaders;

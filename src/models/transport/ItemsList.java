@@ -1,8 +1,9 @@
 package models.transport;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ItemsList {
+public class ItemsList implements Serializable {
 
     private Map<Integer, Item> items;
     private Integer lastId;
@@ -16,6 +17,10 @@ public class ItemsList {
         return this.items.isEmpty();
     }
 
+    public Item getItem(int itemId) {
+        return this.items.get(itemId);
+    }
+
     public List<Item> getItems(){
         return new ArrayList<>(this.items.values());
     }
@@ -26,5 +31,7 @@ public class ItemsList {
         return this.lastId;
     }
 
-
+    public boolean hasItem(int itemId) {
+        return this.items.containsKey(itemId);
+    }
 }

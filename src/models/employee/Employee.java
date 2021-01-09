@@ -1,21 +1,26 @@
 package models.employee;
 
 import models.client.Client;
-import models.transport.Delivery;
-import models.transport.Deposit;
+import models.transport.*;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class Employee {
+public class Employee implements Serializable {
     private Integer id;
     private String name;
     private String category;
     private String permission;
+    private DepositsList depositsList;
+    private DeliveriesList deliveriesList;
 
     public Employee(Integer id, String name, String category, String permission){
         this.id = id;
         this.name = name;
         this.category = category;
-        this. permission = permission;
+        this.permission = permission;
+        this.depositsList = new DepositsList();
+        this.deliveriesList = new DeliveriesList();
     }
 
     public int getId(){
@@ -34,14 +39,12 @@ public class Employee {
         return this.permission;
     }
 
-    //TODO adicionar lista de deposits ao construtor
     public List<Deposit> getDeposits() {
-        return null;
+        return this.depositsList.getDeposits();
     }
 
-    //TODO adicionar lista de deliveries ao construtor
     public List<Delivery> getDeliveries() {
-        return null;
+        return this.deliveriesList.getDeliveries();
     }
 
 }

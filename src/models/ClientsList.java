@@ -4,9 +4,10 @@ import models.client.Client;
 import models.employee.Manager;
 import models.transport.ItemsList;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ClientsList {
+public class ClientsList implements Serializable {
 
 
     private Map<Integer, Client> clients;

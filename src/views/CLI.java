@@ -1,9 +1,8 @@
 package views;
+
 import controllers.Controller;
 import controllers.ControllerClass;
 import models.transport.*;
-
-import java.io.IOException;
 import java.util.*;
 
 public class CLI {
@@ -20,7 +19,6 @@ public class CLI {
                 case "RF":
                     String category = commands[1];
                     String permission = commands[2];
-                    //String name = commands[3];
                     String employeeName = "";
                     for(int i=3; i<commands.length; i++){
                         employeeName += commands[i] + " ";
@@ -276,7 +274,7 @@ public class CLI {
                             System.out.println("  " + item.getId() + " (" + item.getQuantity() + ") " + item.getPermissions() + " " + item.getName());
                         }
 
-                        /*System.out.println("Depósitos:");
+                        System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getClient(clientId).getDeposits();
                         for(Deposit deposit: deposits){
                             System.out.println("  " + deposit.getId() + " (" + deposit.getLocationName() + ") ");
@@ -286,14 +284,14 @@ public class CLI {
                         List<Delivery> deliveries = controller.getClient(clientId).getDeliveries();
                         for(Delivery delivery: deliveries){
                             System.out.println("  " + delivery.getId() + " (" + delivery.getLocationName() + ") ");
-                        }*/
+                        }
                     }
                     break;
 
-                 /*
+
 
                 case "CI":
-                    int clientId = Integer.parseInt(commands[1]);
+                    clientId = Integer.parseInt(commands[1]);
                     int itemId = Integer.parseInt(commands[2]);
 
                     if(!controller.hasClientId(clientId)){
@@ -305,12 +303,12 @@ public class CLI {
                     else{
                         Item item = controller.getClient(clientId).getItem(itemId);
 
-                        System.out.println(item.getQuantity() + " [" + item.getPermissions() + "] " + item.getName());
+                        System.out.println(item.getQuantity() + " " + item.getPermissions() + " " + item.getName());
 
                         System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getClient(clientId).getDeposits();
                         for(Deposit deposit: deposits){
-                            if(deposit.hasItem(clientId, itemId)) {
+                            if(deposit.hasItem(itemId)) {
                                 System.out.println("  " + deposit.getId() + " " + deposit.getItemQuantity(itemId));
                             }
                         }
@@ -318,14 +316,14 @@ public class CLI {
                         System.out.println("Entregas:");
                         List<Delivery> deliveries = controller.getClient(clientId).getDeliveries();
                         for(Delivery delivery: deliveries){
-                            if(delivery.hasItem(clientId, itemId)) {
+                            if(delivery.hasItem(itemId)) {
                                 System.out.println("  " + delivery.getId() + " " + delivery.getItemQuantity(itemId));
                             }
                         }
                     }
 
                     break;
-
+                /*
                 case "CE":
                     int clientId = Integer.parseInt(commands[1]);
                     int deliveryId = Integer.parseInt(commands[2]);
@@ -364,19 +362,18 @@ public class CLI {
 
                         System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getEmployee(employeeId).getDeposits();
-                        if(deposits != null) {
-                            for (Deposit deposit : deposits) {
-                                //System.out.println("  " + deposit.getClientId() + " " + deposit.getId() + " " + deposit.getLocationName() + " " + deposit.getClientName());
-                            }
+
+                        for (Deposit deposit : deposits) {
+                            System.out.println("  " + deposit.getClientId() + " " + deposit.getId() + " " + deposit.getLocationName() + " " + deposit.getClientName());
                         }
 
                         System.out.println("Entregas:");
                         List<Delivery> deliveries = controller.getEmployee(employeeId).getDeliveries();
-                        if(deliveries != null) {
-                            for (Delivery delivery : deliveries) {
-                                //System.out.println("  " + delivery.getClientId() + " " + delivery.getId() + " " + delivery.getLocationName() + " " + delivery.getClientName());
-                            }
+
+                        for (Delivery delivery : deliveries) {
+                            System.out.println("  " + delivery.getClientId() + " " + delivery.getId() + " " + delivery.getLocationName() + " " + delivery.getClientName());
                         }
+
                     }
 
                     break;

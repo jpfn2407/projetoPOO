@@ -1,14 +1,12 @@
 package models.client;
 
 import models.employee.Manager;
-import models.transport.DeliveriesList;
-import models.transport.DepositsList;
-import models.transport.Item;
-import models.transport.ItemsList;
+import models.transport.*;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Client {
+public class Client implements Serializable {
     private Integer id;
     private String name;
     private Manager manager;
@@ -21,6 +19,8 @@ public class Client {
         this.name = name;
         this.manager = manager;
         this.itemsList = new ItemsList();
+        this.depositsList = new DepositsList();
+        this.deliveriesList = new DeliveriesList();
     }
 
     public Integer getId() {
@@ -41,5 +41,21 @@ public class Client {
 
     public int registerItem(int clientId, String itemName, String[] permissions){
         return this.itemsList.registerItem(clientId, itemName, permissions);
+    }
+
+    public List<Deposit> getDeposits(){
+        return this.depositsList.getDeposits();
+    }
+
+    public List<Delivery> getDeliveries() {
+        return this.deliveriesList.getDeliveries();
+    }
+
+    public boolean hasItem(int itemId) {
+        return this.itemsList.hasItem(itemId);
+    }
+
+    public Item getItem(int itemId) {
+        return this.itemsList.getItem(itemId);
     }
 }

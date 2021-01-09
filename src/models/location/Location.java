@@ -2,7 +2,9 @@ package models.location;
 
 import models.transport.ItemsList;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
     private Integer id;
     private String name;
     private ItemsList itemsList;
