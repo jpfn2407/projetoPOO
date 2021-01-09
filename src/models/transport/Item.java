@@ -1,9 +1,10 @@
 package models.transport;
 
+import java.io.Serializable;
 import java.util.*;
 import models.client.Client;
 
-public class Item {
+public class Item implements Serializable {
 
     private Integer clientId;
     private Integer id;

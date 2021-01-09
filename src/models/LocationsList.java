@@ -1,11 +1,12 @@
 package models;
 
+import java.io.Serializable;
 import java.util.*;
 
 import models.client.Client;
 import models.location.Location;
 
-public class LocationsList {
+public class LocationsList implements Serializable {
     private Map<Integer, Location> locations;
     private Integer lastId;
 

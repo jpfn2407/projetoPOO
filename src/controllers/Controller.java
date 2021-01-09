@@ -40,8 +40,6 @@ public interface Controller {
 
     int getNumberOfDriversInThisArray(String[] commands2);
 
-    boolean hasItemId(int parseInt);
-
     boolean hasLocationId(int locationId);
 
     boolean driverHasPermissionsForItem(String[] employeeArray, ArrayList<String[]> itemArrayList);

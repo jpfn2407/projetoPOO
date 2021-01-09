@@ -78,12 +78,12 @@ public class ControllerClass implements Controller, Serializable {
         return this.locationsList.registerLocation(locationName);
     }
 
-    public int getNumberOfDriversInThisArray(String[] commands2) {
-        return 0;
+    public boolean hasItem(int clientId, int itemId) {
+        return this.clientsList.getClient(clientId).hasItem(itemId);
     }
 
-    public boolean hasItemId(int parseInt) {
-        return false;
+    public int getNumberOfDriversInThisArray(String[] commands2) {
+        return 0;
     }
 
     public boolean hasLocationId(int locationId) {
@@ -102,10 +102,6 @@ public class ControllerClass implements Controller, Serializable {
         return 0;
     }
 
-    public boolean hasItem(int clientId, int s) {
-        return false;
-    }
-
     public boolean hasItemQuantity(int clientId, int parseInt, String s) {
         return false;
     }
@@ -120,6 +116,7 @@ public class ControllerClass implements Controller, Serializable {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(this);
             objectOutputStream.close();
+            fileOutputStream.close();
         }
         catch (IOException ioe){
             ioe.printStackTrace();

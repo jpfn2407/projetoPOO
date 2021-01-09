@@ -2,7 +2,9 @@ package models.employee;
 
 import models.client.Client;
 
-public class Manager extends Employee{
+import java.io.Serializable;
+
+public class Manager extends Employee implements Serializable {
     private Client client;
     public Manager(Integer id, String name, String category, String permission){
         super(id, name, category, permission);
