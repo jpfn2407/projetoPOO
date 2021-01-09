@@ -2,11 +2,13 @@ package views;
 import controllers.Controller;
 import controllers.ControllerClass;
 import models.transport.*;
+
+import java.io.IOException;
 import java.util.*;
 
 public class CLI {
     public CLI(){
-        ControllerClass controller = new ControllerClass();
+        Controller controller = new ControllerClass();
         Scanner scanner = new Scanner(System.in);
         while(true) {
             String line = scanner.nextLine();
@@ -61,10 +63,13 @@ public class CLI {
                     break;
 
 
-                /*
+
                 case "RI":
                     int clientId = Integer.parseInt(commands[1]);
-                    String itemName = commands[2];
+                    String itemName = "";
+                    for(int i=2; i<commands.length; i++){
+                        itemName += commands[i] + " ";
+                    }
                     if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
@@ -73,15 +78,18 @@ public class CLI {
                         while(true) {
                             String line2 = scanner2.nextLine();
                             boolean valid = true;
-                            if (line == "") {
+                            if (line2 == "") {
                                 String[] normal = {"N"};
-                                controller.registerItem(clientId, itemName, normal);
+                                int itemId = controller.registerItem(clientId, itemName, normal);
+                                System.out.println("Item registado para o cliente " + clientId + " com o identificador " + itemId);
+                                break;
                             }
 
                             String[] commands2 = line2.split(", ");
 
                             for(int i=0; i<commands2.length; i++){
                                 if(!controller.validPermission(commands2[i])){
+                                    valid = false;
                                     System.out.println("Permissão inválida.");
                                     break;
                                 }
@@ -102,10 +110,10 @@ public class CLI {
                     }
                     else{
                         int locationId = controller.registerLocation(locationName);
-                        System.out.println("Local registado com o identificador" + locationId);
+                        System.out.println("Local registado com o identificador " + locationId);
                     }
                     break;
-
+                /*
                 case "RD":
                     int clientId = Integer.parseInt(commands[1]);
                     int locationId = Integer.parseInt(commands[2]);
@@ -250,8 +258,9 @@ public class CLI {
 
                     break;
                 */
+
                 case "CC":
-                    int clientId = Integer.parseInt(commands[1]);
+                    clientId = Integer.parseInt(commands[1]);
 
                     if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
@@ -264,10 +273,10 @@ public class CLI {
                         System.out.println("Items:");
                         List<Item> items = controller.getClient(clientId).getItems();
                         for(Item item: items){
-                            System.out.println("  " + item.getId() + " (" + item.getQuantity() + ") " + " [" + item.getPermissions() + "] " + item.getName());
+                            System.out.println("  " + item.getId() + " (" + item.getQuantity() + ") " + item.getPermissions() + " " + item.getName());
                         }
 
-                        System.out.println("Depósitos:");
+                        /*System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getClient(clientId).getDeposits();
                         for(Deposit deposit: deposits){
                             System.out.println("  " + deposit.getId() + " (" + deposit.getLocationName() + ") ");
@@ -277,7 +286,7 @@ public class CLI {
                         List<Delivery> deliveries = controller.getClient(clientId).getDeliveries();
                         for(Delivery delivery: deliveries){
                             System.out.println("  " + delivery.getId() + " (" + delivery.getLocationName() + ") ");
-                        }
+                        }*/
                     }
                     break;
 
@@ -371,7 +380,7 @@ public class CLI {
                     }
 
                     break;
-                /*
+
                 case "G":
                     String fileName = commands[1];
                     controller.saveFile(fileName);
@@ -379,15 +388,14 @@ public class CLI {
                     break;
 
                 case "L":
-                    String fileName = commands[1];
-                    if(!controller.saveFile(fileName)){
+                    fileName = commands[1];
+                    try {
+                        controller = Controller.loadFile(fileName);
+                        System.out.println("Ficheiro lido com sucesso.");
+                    } catch (Exception e) {
                         System.out.println("Ficheiro inexistente.");
                     }
-                    else{
-                    controller.loadFile(fileName);
-                    System.out.println("Ficheiro lido com sucesso.");
-                    }
-                    break;*/
+                    break;
 
                 default:
                     System.out.println("Instrução Inválida.");

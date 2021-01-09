@@ -2,13 +2,16 @@ package models;
 
 import models.client.Client;
 import models.employee.Manager;
+import models.transport.ItemsList;
 
 import java.util.*;
 
 public class ClientsList {
 
+
     private Map<Integer, Client> clients;
     private Integer lastId;
+
 
     public ClientsList(){
         clients = new HashMap<Integer, Client>();

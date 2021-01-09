@@ -20,6 +20,7 @@ public class Client {
         this.id = id;
         this.name = name;
         this.manager = manager;
+        this.itemsList = new ItemsList();
     }
 
     public Integer getId() {
@@ -35,6 +36,10 @@ public class Client {
     }
 
     public List<Item> getItems() {
-        return itemsList.getItems();
+        return this.itemsList.getItems();
+    }
+
+    public int registerItem(int clientId, String itemName, String[] permissions){
+        return this.itemsList.registerItem(clientId, itemName, permissions);
     }
 }
