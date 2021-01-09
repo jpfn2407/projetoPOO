@@ -1,6 +1,9 @@
 package controllers;
 
 import javax.print.attribute.Attribute;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.TypeVariable;
 import models.*;
@@ -56,4 +59,16 @@ public interface Controller {
     Client getClient(int clientId);
 
     Employee getEmployee(int employeeId);
+
+    void saveFile(String fileName);
+
+    static Controller loadFile(String fileName) throws IOException, ClassNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream(fileName);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        Controller c = (Controller) objectInputStream.readObject();
+        objectInputStream.close();
+        fileInputStream.close();
+        return c;
+    }
+
 }

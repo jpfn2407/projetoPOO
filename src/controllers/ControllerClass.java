@@ -5,6 +5,7 @@ import models.employee.Employee;
 import models.employee.Manager;
 
 import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ControllerClass implements Controller, Serializable {
@@ -61,20 +62,20 @@ public class ControllerClass implements Controller, Serializable {
         return this.clientsList.getClient(clientId);
     }
 
-    public int registerItem(int clientId, String itemName, String[] commands2) {
-        return 0;
+    public boolean validPermission(String permission) {
+        return (permission.equals("N") || permission.equals("S") || permission.equals("P"));
     }
 
-    public boolean validPermission(String s) {
-        return false;
+    public int registerItem(int clientId, String itemName, String[] permissions) {
+        return this.clientsList.getClient(clientId).registerItem(clientId, itemName, permissions);
     }
 
     public boolean hasLocation(String locationName) {
-        return false;
+        return this.locationsList.hasLocation(locationName);
     }
 
     public int registerLocation(String locationName) {
-        return 0;
+        return this.locationsList.registerLocation(locationName);
     }
 
     public int getNumberOfDriversInThisArray(String[] commands2) {
@@ -112,4 +113,17 @@ public class ControllerClass implements Controller, Serializable {
     public int registerItemDelivery(String[] idArray, String[] employeeArray, ArrayList<String[]> itemArrayList) {
         return 0;
     }
+
+    public void saveFile(String fileName) {
+        try{
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(this);
+            objectOutputStream.close();
+        }
+        catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+    }
+
 }
