@@ -51,9 +51,9 @@ public interface Controller {
 
     boolean hasItem(int clientId, int s);
 
-    boolean hasItemQuantity(int clientId, int parseInt, String s);
+    boolean hasItemQuantity(int clientId, int parseInt, int s);
 
-    int registerItemDelivery(String[] idArray, String[] employeeArray, ArrayList<String[]> itemArrayList);
+    int registerItemDelivery(String[] idArray, String[] employeeArray, List<String[]> itemArrayList);
 
     Client getClient(int clientId);
 

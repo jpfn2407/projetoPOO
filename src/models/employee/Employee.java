@@ -50,4 +50,8 @@ public class Employee implements Serializable {
     public void addDeposit(Deposit deposit) {
         this.depositsList.addDeposit(deposit);
     }
+
+    public void addDelivery(Delivery delivery) {
+        this.deliveriesList.addDelivery(delivery);
+    }
 }

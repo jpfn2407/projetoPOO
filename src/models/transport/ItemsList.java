@@ -38,4 +38,8 @@ public class ItemsList implements Serializable {
     public void addItemQuantityById(int itemId, int quantity){
         this.items.get(itemId).addQuantity(quantity);
     }
+
+    public void removeItemQuantityById(int itemId, int quantity){
+        this.items.get(itemId).removeQuantity(quantity);
+    }
 }
