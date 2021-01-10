@@ -3,6 +3,7 @@ package models.transport;
 import models.client.Client;
 import models.employee.Driver;
 import models.employee.Employee;
+import models.employee.Loader;
 import models.location.Location;
 import java.util.*;
 import java.io.Serializable;
@@ -21,6 +22,8 @@ public class Delivery implements Serializable {
         this.client = client;
         this.location = location;
         this.driver = driver;
+        this.employees = new HashMap<Integer, Employee>();
+        this.items = new HashMap<Integer, Item>();
         for(Employee employee : employees){
             this.employees.put(employee.getId(), employee);
         }
@@ -57,4 +60,19 @@ public class Delivery implements Serializable {
         return this.items.get(itemId).getQuantity();
     }
 
+    public String getDriverPermission() {
+        return this.driver.getPermissions();
+    }
+
+    public String getDriverName(){
+        return this.driver.getName();
+    }
+
+    public List<Employee> getLoaders() {
+        return new ArrayList<>(this.employees.values());
+    }
+
+    public List<Item> getItems() {
+        return new ArrayList<>(this.items.values());
+    }
 }

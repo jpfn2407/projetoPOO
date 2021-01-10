@@ -20,6 +20,14 @@ public class Item implements Serializable {
         this.permissions = permissions;
     }
 
+    public Item(Integer clientId, Integer id,  String itemName, String[] permissions, int quantity){
+        this.clientId = clientId;
+        this.id = id;
+        this.itemName = itemName;
+        this.quantity = quantity;
+        this.permissions = permissions;
+    }
+
     public Integer getClientId() {
         return clientId;
     }
@@ -46,5 +54,9 @@ public class Item implements Serializable {
 
     public void addQuantity(int quantity){
         this.quantity += quantity;
+    }
+
+    public void removeQuantity(int quantity) {
+        this.quantity -= quantity;
     }
 }

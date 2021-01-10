@@ -1,8 +1,10 @@
 package controllers;
 import models.*;
 import models.client.Client;
+import models.employee.Driver;
 import models.employee.Employee;
 import models.employee.Manager;
+import models.transport.Delivery;
 import models.transport.Deposit;
 import models.transport.Item;
 
@@ -151,7 +153,7 @@ public class ControllerClass implements Controller, Serializable {
         List<Item> itemList = new ArrayList<Item>();
         for(String[] item: itemArrayList){
             this.clientsList.getClient(clientId).addItemQuantityById(Integer.parseInt(item[0]),Integer.parseInt(item[1]));
-            itemList.add(this.clientsList.getClient(clientId).getNewItem(Integer.parseInt(item[0])));
+            itemList.add(this.clientsList.getClient(clientId).getNewDepositItem(Integer.parseInt(item[0]), Integer.parseInt(item[1])));
         }
         List<Employee> employeeList = this.employeeIdArrayToList(employeeArray);
         Deposit deposit = this.clientsList.getClient(clientId).registerDeposit(this.clientsList.getClient(clientId), this.locationsList.getLocation(locationId), employeeList, itemList);
@@ -169,12 +171,41 @@ public class ControllerClass implements Controller, Serializable {
         return employeeList;
     }
 
-    public boolean hasItemQuantity(int clientId, int parseInt, String s) {
-        return false;
+    public boolean hasItemQuantity(int clientId, int itemId, int itemQuantity) {
+        return (this.clientsList.getClient(clientId).getItem(itemId).getQuantity() >= itemQuantity);
     }
 
-    public int registerItemDelivery(String[] idArray, String[] employeeArray, ArrayList<String[]> itemArrayList) {
-        return 0;
+    /** Diminuir a quantidade do item na lista do cliente, adicionar ao deliveryList do Cliente,
+     * e ao deliveryList de todos os Employees no Array com base no seu ID.
+     *
+     * @param idArray Constituido por [0] que é o ClientID e o [1] que é o LocationID.
+     * @param employeeArray Array de IDs dos employees.
+     * @param itemArrayList ArrayList de Arrays, cada posição é um String[] sendo que o [0] é ItemID [1] é a quantidade do Item.
+     * @return
+     */
+    public int registerItemDelivery(String[] idArray, String[] employeeArray, List<String[]> itemArrayList) {
+        Integer clientId = Integer.parseInt(idArray[0]);
+        Integer locationId = Integer.parseInt(idArray[1]);
+        List<Item> itemList = new ArrayList<Item>();
+        for(String[] item: itemArrayList){
+            this.clientsList.getClient(clientId).removeItemQuantityById(Integer.parseInt(item[0]),Integer.parseInt(item[1]));
+            itemList.add(this.clientsList.getClient(clientId).getNewDeliveryItem(Integer.parseInt(item[0]), Integer.parseInt(item[1])));
+        }
+        List<Employee> employeeList = this.employeeIdArrayToList(employeeArray);
+        Driver driver = null;
+        for(Employee employee: employeeList){
+            if(this.isDriver(employee.getId())){
+                driver = (Driver) employee;
+                employeeList.remove(employee);
+                break;
+            }
+        }
+        Delivery delivery = this.clientsList.getClient(clientId).registerDelivery(this.clientsList.getClient(clientId), this.locationsList.getLocation(locationId), driver, employeeList, itemList);
+        for(Employee employee : employeeList){
+            employee.addDelivery(delivery);
+        }
+        return delivery.getId();
+
     }
 
     public void saveFile(String fileName) {

@@ -2,6 +2,8 @@ package views;
 
 import controllers.Controller;
 import controllers.ControllerClass;
+import models.employee.Employee;
+import models.employee.Loader;
 import models.transport.*;
 import java.util.*;
 
@@ -175,18 +177,18 @@ public class CLI {
 
 
                     break;
-                /*
+
                 case "RE":
-                    int clientId = Integer.parseInt(commands[1]);
-                    int locationId = Integer.parseInt(commands[2]);
-                    String[] idArray = {commands[1], commands[2]};
+                    clientId = Integer.parseInt(commands[1]);
+                    locationId = Integer.parseInt(commands[2]);
+                    idArray = new String[]{commands[1], commands[2]};
 
-                    boolean isValidId = true;
-                    int numberOfDrivers = 0;
-                    Scanner scanner2 = new Scanner(System.in);
-                    String line2 = scanner2.nextLine();
+                    isValidId = true;
+                    numberOfDrivers = 0;
+                    scanner2 = new Scanner(System.in);
+                    line2 = scanner2.nextLine();
 
-                    String[] commands2 = line2.split(" ");
+                    commands2 = line2.split(" ");
 
                     for(int i=0; i< commands2.length; i++){
                         if(!controller.hasEmployeeId(Integer.parseInt(commands2[i]))){
@@ -194,13 +196,13 @@ public class CLI {
                         }
                     }
 
-                    String[] employeeArray = commands2;
+                    employeeArray = commands2;
 
-                    boolean hasIndicatedItem = true;
+                    hasIndicatedItem = true;
                     boolean hasIndicatedItemQuantity = true;
 
-                    Scanner scanner3 = new Scanner(System.in);
-                    ArrayList<String[]> itemArrayList = new ArrayList<String[]>();
+                    scanner3 = new Scanner(System.in);
+                    itemArrayList = new ArrayList<String[]>();
                     while (true) {
                         String line3 = scanner3.nextLine();
                         if (line3 == "") break;
@@ -210,7 +212,7 @@ public class CLI {
                         if(!controller.hasItem(clientId, Integer.parseInt(commands3[0]))){
                             hasIndicatedItem = false;
                         }
-                        else if(!controller.hasItemQuantity(clientId, Integer.parseInt(commands3[0]), commands3[1])){
+                        else if(!controller.hasItemQuantity(clientId, Integer.parseInt(commands3[0]), Integer.parseInt(commands3[1]))){
                             hasIndicatedItemQuantity = false;
                         }
 
@@ -228,10 +230,10 @@ public class CLI {
                     else if(numberOfDrivers > 1 || !isValidId){
                         System.out.println("Funcionário inexistente.");
                     }
-                    else if(!controller.driverHasPermissionsForItem(employeeArray, itemArrayList) || (numberOfDrivers == 1)){
+                    else if(!controller.driverHasPermissionsForItem(clientId, employeeArray, itemArrayList) || (numberOfDrivers == 1)){
                         System.out.println("Condutor sem permissões.");
                     }
-                    else  if(!controller.loadersHavePermissionsForItem(employeeArray, itemArrayList)){
+                    else  if(!controller.loadersHavePermissionsForItem(clientId, employeeArray, itemArrayList)){
                         System.out.println("Carregador sem permissões.");
                     }
                     else if(!hasIndicatedItem){
@@ -246,7 +248,7 @@ public class CLI {
                     }
 
                     break;
-                */
+
 
                 case "CC":
                     clientId = Integer.parseInt(commands[1]);
@@ -314,9 +316,9 @@ public class CLI {
                     }
 
                     break;
-                /*
+
                 case "CE":
-                    int clientId = Integer.parseInt(commands[1]);
+                    clientId = Integer.parseInt(commands[1]);
                     int deliveryId = Integer.parseInt(commands[2]);
                     if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
@@ -328,8 +330,8 @@ public class CLI {
                         Delivery delivery = controller.getClient(clientId).getDelivery(deliveryId);
                         System.out.println(delivery.getDriverPermission() + " " + delivery.getDriverName());
 
-                        List<Loader> loaders = delivery.getLoaders();
-                        for(Loader loader: loaders){
+                        List<Employee> loaders = delivery.getLoaders();
+                        for(Employee loader: loaders){
                             System.out.println("  " + loader.getPermissions() + " " + loader.getName());
                         }
 
@@ -340,7 +342,7 @@ public class CLI {
                     }
 
                     break;
-                */
+
                 case "CF":
                     employeeId = Integer.parseInt(commands[1]);
                     if(!controller.hasEmployeeId(employeeId)){
