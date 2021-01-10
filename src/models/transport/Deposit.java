@@ -54,4 +54,5 @@ public class Deposit implements Serializable {
     public Integer getItemQuantity(Integer itemId){
         return this.items.get(itemId).getQuantity();
     }
+
 }

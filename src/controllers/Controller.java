@@ -1,6 +1,7 @@
 package controllers;
 
 import javax.print.attribute.Attribute;
+import java.util.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -42,11 +43,11 @@ public interface Controller {
 
     boolean hasLocationId(int locationId);
 
-    boolean driverHasPermissionsForItem(String[] employeeArray, ArrayList<String[]> itemArrayList);
+    boolean driverHasPermissionsForItem(int clientId, String[] employeeArray, List<String[]> itemArrayList);
 
-    boolean loadersHavePermissionsForItem(String[] employeeArray, ArrayList<String[]> itemArrayList);
+    boolean loadersHavePermissionsForItem(int clientId, String[] employeeArray, List<String[]> itemArrayList);
 
-    int registerItemDeposit(String[] idArray, String[] employeeArray, ArrayList<String[]> itemArrayList);
+    int registerItemDeposit(String[] idArray, String[] employeeArray, List<String[]> itemArrayList);
 
     boolean hasItem(int clientId, int s);
 

@@ -20,6 +20,8 @@ public class Item implements Serializable {
         this.permissions = permissions;
     }
 
+
+
     public Integer getId() {
         return this.id;
     }
@@ -38,5 +40,9 @@ public class Item implements Serializable {
 
     public String[] getPermissionsArray() {
         return permissions;
+    }
+
+    public void addQuantity(int quantity){
+        this.quantity += quantity;
     }
 }
