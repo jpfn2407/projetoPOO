@@ -114,7 +114,7 @@ public class ControllerClass implements Controller, Serializable {
         for(int i=0; i<employeeArray.length; i++){
             if(this.isDriver(Integer.parseInt(employeeArray[i]))){
                 for (String[] id : itemArrayList){
-                    if( this.employeeEqualsItemPermission(clientId, Integer.parseInt(id[0]), Integer.parseInt(employeeArray[i])) ){
+                    if( this.employeeEqualsItemPermission(clientId, Integer.parseInt(id[0]), Integer.parseInt(employeeArray[i]))){
                         valid = true;
                     }
                 }
@@ -148,10 +148,10 @@ public class ControllerClass implements Controller, Serializable {
     public int registerItemDeposit(String[] idArray, String[] employeeArray, List<String[]> itemArrayList) {
         Integer clientId = Integer.parseInt(idArray[0]);
         Integer locationId = Integer.parseInt(idArray[1]);
-        List<Item> itemList = new ArrayList<>();
+        List<Item> itemList = new ArrayList<Item>();
         for(String[] item: itemArrayList){
             this.clientsList.getClient(clientId).addItemQuantityById(Integer.parseInt(item[0]),Integer.parseInt(item[1]));
-            itemList.add(this.clientsList.getClient(clientId).getItem(Integer.parseInt(item[1])));
+            itemList.add(this.clientsList.getClient(clientId).getNewItem(Integer.parseInt(item[0])));
         }
         List<Employee> employeeList = this.employeeIdArrayToList(employeeArray);
         Deposit deposit = this.clientsList.getClient(clientId).registerDeposit(this.clientsList.getClient(clientId), this.locationsList.getLocation(locationId), employeeList, itemList);
