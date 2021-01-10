@@ -61,11 +61,16 @@ public class Client implements Serializable {
         return this.itemsList.getItem(itemId);
     }
 
+    public Item getNewItem(int itemId){
+        Item item = this.itemsList.getItem(itemId);
+        return new Item(item.getClientId(), item.getId(), item.getName(), item.getPermissionsArray());
+    }
+
     public void addItemQuantityById(int itemId, int quantity) {
         this.itemsList.addItemQuantityById(itemId, quantity);
     }
 
     public Deposit registerDeposit(Client client, Location location, List<Employee> employeeList, List<Item> itemList) {
-        return  this.depositsList.makeDeposit(client, location, employeeList, itemList);
+        return this.depositsList.makeDeposit(client, location, employeeList, itemList);
     }
 }

@@ -20,7 +20,9 @@ public class Item implements Serializable {
         this.permissions = permissions;
     }
 
-
+    public Integer getClientId() {
+        return clientId;
+    }
 
     public Integer getId() {
         return this.id;
@@ -35,7 +37,7 @@ public class Item implements Serializable {
     }
 
     public String getPermissions() {
-        return Arrays.toString(this.permissions);
+        return this.permissions[0];
     }
 
     public String[] getPermissionsArray() {
