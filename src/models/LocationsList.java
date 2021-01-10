@@ -26,10 +26,17 @@ public class LocationsList implements Serializable {
         return false;
     }
 
+    public boolean hasId(Integer locationId){
+        return this.locations.containsKey(locationId);
+    }
+
     public int registerLocation(String locationName){
         this.lastId += 1;
         this.locations.put(this.lastId, new Location(this.lastId, locationName));
         return this.lastId;
     }
 
+    public Location getLocation(Integer locationId) {
+        return this.locations.get(locationId);
+    }
 }

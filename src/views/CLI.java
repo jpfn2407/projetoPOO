@@ -111,20 +111,15 @@ public class CLI {
                         System.out.println("Local registado com o identificador " + locationId);
                     }
                     break;
-                /*
+
                 case "RD":
-                    int clientId = Integer.parseInt(commands[1]);
+                    clientId = Integer.parseInt(commands[1]);
                     int locationId = Integer.parseInt(commands[2]);
                     String[] idArray = {commands[1], commands[2]};
-                    *//*if(controller.hasLocationId(locationId)){
-                        System.out.println("Local inexistente.");
-                    }
-                    else if(!controller.hasClientId(clientId)){
-                        System.out.println("Cliente inexistente.");
-                    }
-                    else{*//*
+
                     boolean isValidId = true;
                     int numberOfDrivers = 0;
+
                     Scanner scanner2 = new Scanner(System.in);
                     String line2 = scanner2.nextLine();
 
@@ -138,19 +133,18 @@ public class CLI {
 
                     numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
 
-                    *//*if(isValidId && (numberOfDrivers == 1)) {*//*
                     String[] employeeArray = commands2;
 
                     boolean hasIndicatedItem = true;
 
                     Scanner scanner3 = new Scanner(System.in);
-                    ArrayList<String[]> itemArrayList = new ArrayList<String[]>();
+                    List<String[]> itemArrayList = new ArrayList<String[]>();
                     while (true) {
                         String line3 = scanner3.nextLine();
                         if (line3 == "") break;
 
                         String[] commands3 = line3.split(" ");
-                        if(!controller.hasItemId(Integer.parseInt(commands3[0]))){
+                        if(!controller.hasItem(clientId, Integer.parseInt(commands3[0]))){
                             hasIndicatedItem = false;
                         }
                         itemArrayList.add(commands3);
@@ -159,19 +153,19 @@ public class CLI {
                     if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
-                    else if(controller.hasLocationId(locationId)){
+                    else if(!controller.hasLocationId(locationId)){
                         System.out.println("Local inexistente.");
                     }
-                    else if(numberOfDrivers > 1 || !isValidId){
+                    else if(!isValidId){
                         System.out.println("Funcionário inexistente.");
                     }
                     else if(!hasIndicatedItem){
                         System.out.println("Item inexistente.");
                     }
-                    else if(!controller.driverHasPermissionsForItem(employeeArray, itemArrayList) || (numberOfDrivers == 1)){
+                    else if(!controller.driverHasPermissionsForItem(clientId, employeeArray, itemArrayList) || (numberOfDrivers == 0)){
                         System.out.println("Condutor sem permissões.");
                     }
-                    else  if(!controller.loadersHavePermissionsForItem(employeeArray, itemArrayList)){
+                    else  if(!controller.loadersHavePermissionsForItem(clientId, employeeArray, itemArrayList)){
                         System.out.println("Carregador sem permissões.");
                     }
                     else{
@@ -179,12 +173,9 @@ public class CLI {
                         System.out.println("Depósito registado com o identificador " + depositId);
                     }
 
-                    *//*else {
-                        System.out.println("Funcionário inexistente.");
-                    }*//*
 
                     break;
-
+                /*
                 case "RE":
                     int clientId = Integer.parseInt(commands[1]);
                     int locationId = Integer.parseInt(commands[2]);

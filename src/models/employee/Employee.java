@@ -47,4 +47,7 @@ public class Employee implements Serializable {
         return this.deliveriesList.getDeliveries();
     }
 
+    public void addDeposit(Deposit deposit) {
+        this.depositsList.addDeposit(deposit);
+    }
 }

@@ -1,6 +1,8 @@
 package models.client;
 
+import models.employee.Employee;
 import models.employee.Manager;
+import models.location.Location;
 import models.transport.*;
 
 import java.io.Serializable;
@@ -57,5 +59,13 @@ public class Client implements Serializable {
 
     public Item getItem(int itemId) {
         return this.itemsList.getItem(itemId);
+    }
+
+    public void addItemQuantityById(int itemId, int quantity) {
+        this.itemsList.addItemQuantityById(itemId, quantity);
+    }
+
+    public Deposit registerDeposit(Client client, Location location, List<Employee> employeeList, List<Item> itemList) {
+        return  this.depositsList.makeDeposit(client, location, employeeList, itemList);
     }
 }

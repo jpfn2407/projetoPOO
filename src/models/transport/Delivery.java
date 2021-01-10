@@ -1,6 +1,7 @@
 package models.transport;
 
 import models.client.Client;
+import models.employee.Driver;
 import models.employee.Employee;
 import models.location.Location;
 import java.util.*;
@@ -11,13 +12,15 @@ public class Delivery implements Serializable {
     private Integer id;
     private Client client;
     private Location location;
+    private Employee driver;
     private Map<Integer, Employee> employees;
     private Map<Integer, Item> items;
 
-    public Delivery(Integer id, Client client, Location location, List<Employee> employees, List<Item> items){
+    public Delivery(Integer id, Client client, Location location, Driver driver, List<Employee> employees, List<Item> items){
         this.id = id;
         this.client = client;
         this.location = location;
+        this.driver = driver;
         for(Employee employee : employees){
             this.employees.put(employee.getId(), employee);
         }

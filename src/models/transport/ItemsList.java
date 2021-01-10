@@ -34,4 +34,8 @@ public class ItemsList implements Serializable {
     public boolean hasItem(int itemId) {
         return this.items.containsKey(itemId);
     }
+
+    public void addItemQuantityById(int itemId, int quantity){
+        this.items.get(itemId).addQuantity(quantity);
+    }
 }

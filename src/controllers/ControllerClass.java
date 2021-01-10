@@ -3,10 +3,11 @@ import models.*;
 import models.client.Client;
 import models.employee.Employee;
 import models.employee.Manager;
+import models.transport.Deposit;
+import models.transport.Item;
 
-import java.io.Serializable;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class ControllerClass implements Controller, Serializable {
 
@@ -74,6 +75,10 @@ public class ControllerClass implements Controller, Serializable {
         return this.locationsList.hasLocation(locationName);
     }
 
+    public boolean hasLocationId(int locationId) {
+        return this.locationsList.hasId(locationId);
+    }
+
     public int registerLocation(String locationName) {
         return this.locationsList.registerLocation(locationName);
     }
@@ -82,24 +87,86 @@ public class ControllerClass implements Controller, Serializable {
         return this.clientsList.getClient(clientId).hasItem(itemId);
     }
 
-    public int getNumberOfDriversInThisArray(String[] commands2) {
-        return 0;
+    private boolean isDriver(Integer employeeId){
+        return this.getEmployee(employeeId).getCategory().equals("Condutor");
     }
 
-    public boolean hasLocationId(int locationId) {
-        return false;
+    private boolean isLoader(Integer employeeId){
+        return this.getEmployee(employeeId).getCategory().equals("Carregador");
     }
 
-    public boolean driverHasPermissionsForItem(String[] employeeArray, ArrayList<String[]> itemArrayList) {
-        return false;
+    private boolean employeeEqualsItemPermission(Integer clientId, Integer itemId, Integer employeeId){
+        return this.clientsList.getClient(clientId).getItem(itemId).getPermissions().equals(this.employeesList.getEmployee(employeeId).getPermissions());
     }
 
-    public boolean loadersHavePermissionsForItem(String[] employeeArray, ArrayList<String[]> itemArrayList) {
-        return false;
+    public int getNumberOfDriversInThisArray(String[] employeesIdArray) {
+        int numberOfDrivers = 0;
+        for(int i=0; i<employeesIdArray.length; i++){
+            if(this.isDriver(Integer.parseInt(employeesIdArray[i]))){
+                numberOfDrivers++;
+            }
+        }
+        return numberOfDrivers;
     }
 
-    public int registerItemDeposit(String[] idArray, String[] employeeArray, ArrayList<String[]> itemArrayList) {
-        return 0;
+    public boolean driverHasPermissionsForItem(int clientId, String[] employeeArray, List<String[]> itemArrayList) {
+        boolean valid = false;
+        for(int i=0; i<employeeArray.length; i++){
+            if(this.isDriver(Integer.parseInt(employeeArray[i]))){
+                for (String[] id : itemArrayList){
+                    if( this.employeeEqualsItemPermission(clientId, Integer.parseInt(id[0]), Integer.parseInt(employeeArray[i])) ){
+                        valid = true;
+                    }
+                }
+            }
+        }
+        return valid;
+    }
+
+    public boolean loadersHavePermissionsForItem(int clientId, String[] employeeArray, List<String[]> itemArrayList) {
+        boolean valid = false;
+        for(int i=0; i<employeeArray.length; i++){
+            if(this.isLoader(Integer.parseInt(employeeArray[i]))){
+                for (String[] id : itemArrayList){
+                    if( this.employeeEqualsItemPermission(clientId, Integer.parseInt(id[0]), Integer.parseInt(employeeArray[i])) ){
+                        valid = true;
+                    }
+                }
+            }
+        }
+        return valid;
+    }
+
+    /** Adicionar o item à itemList do Client, ao depositList do Client,
+     * ao depositList de todos os Employees no Array com base no seu ID.
+     *
+     * @param idArray Constituido por [0] que é o ClientID e o [1] que é o LocationID.
+     * @param employeeArray Array de IDs dos employees.
+     * @param itemArrayList ArrayList de Arrays, cada posição é um String[] sendo que o [0] é ItemID [1] é a quantidade do Item.
+     * @return itemId
+     */
+    public int registerItemDeposit(String[] idArray, String[] employeeArray, List<String[]> itemArrayList) {
+        Integer clientId = Integer.parseInt(idArray[0]);
+        Integer locationId = Integer.parseInt(idArray[1]);
+        List<Item> itemList = new ArrayList<>();
+        for(String[] item: itemArrayList){
+            this.clientsList.getClient(clientId).addItemQuantityById(Integer.parseInt(item[0]),Integer.parseInt(item[1]));
+            itemList.add(this.clientsList.getClient(clientId).getItem(Integer.parseInt(item[1])));
+        }
+        List<Employee> employeeList = this.employeeIdArrayToList(employeeArray);
+        Deposit deposit = this.clientsList.getClient(clientId).registerDeposit(this.clientsList.getClient(clientId), this.locationsList.getLocation(locationId), employeeList, itemList);
+        for(Employee employee : employeeList){
+            employee.addDeposit(deposit);
+        }
+        return deposit.getId();
+    }
+
+    private List<Employee> employeeIdArrayToList(String[] employeeArray){
+        List<Employee> employeeList = new ArrayList<>();
+        for(String id : employeeArray){
+            employeeList.add(this.getEmployee(Integer.parseInt(id)));
+        }
+        return employeeList;
     }
 
     public boolean hasItemQuantity(int clientId, int parseInt, String s) {
