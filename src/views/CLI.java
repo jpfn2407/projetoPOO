@@ -37,7 +37,7 @@ public class CLI {
                     }
                     else{
                         int employeeId = controller.registerEmployee(category, permission, employeeName);
-                        System.out.println("Funcionário registado com o identificador " + employeeId);
+                        System.out.println("Funcionário registado com o identificador " + employeeId + ".");
                     }
                     break;
 
@@ -58,11 +58,9 @@ public class CLI {
                     }
                     else{
                         int clientId = controller.registerClient(employeeId, clientName);
-                        System.out.println("Cliente registado com o identificador " + clientId);
+                        System.out.println("Cliente registado com o identificador " + clientId + ".");
                     }
                     break;
-
-
 
                 case "RI":
                     int clientId = Integer.parseInt(commands[1]);
@@ -74,14 +72,14 @@ public class CLI {
                         System.out.println("Cliente inexistente.");
                     }
                     else{
-                        Scanner scanner2 = new Scanner(System.in);
+                        //Scanner scanner2 = new Scanner(System.in);
                         while(true) {
-                            String line2 = scanner2.nextLine();
+                            String line2 = scanner.nextLine();
                             boolean valid = true;
                             if (line2 == "") {
                                 String[] normal = {"N"};
                                 int itemId = controller.registerItem(clientId, itemName, normal);
-                                System.out.println("Item registado para o cliente " + clientId + " com o identificador " + itemId);
+                                System.out.println("Item registado para o cliente " + clientId + " com o identificador " + itemId + ".");
                                 break;
                             }
 
@@ -96,7 +94,7 @@ public class CLI {
                             }
                             if(valid){
                                int itemId = controller.registerItem(clientId, itemName, commands2);
-                               System.out.println("Item registado para o cliente " + clientId + " com o identificador " + itemId);
+                               System.out.println("Item registado para o cliente " + clientId + " com o identificador " + itemId + ".");
                             }
                             break;
                         }
@@ -110,7 +108,7 @@ public class CLI {
                     }
                     else{
                         int locationId = controller.registerLocation(locationName);
-                        System.out.println("Local registado com o identificador " + locationId);
+                        System.out.println("Local registado com o identificador " + locationId + ".");
                     }
                     break;
 
@@ -122,34 +120,37 @@ public class CLI {
                     boolean isValidId = true;
                     int numberOfDrivers = 0;
 
-                    Scanner scanner2 = new Scanner(System.in);
-                    String line2 = scanner2.nextLine();
+                    //Scanner scanner2 = new Scanner(System.in);
+                    String line2 = scanner.nextLine();
 
                     String[] commands2 = line2.split(" ");
 
                     for(int i=0; i< commands2.length; i++){
                         if(!controller.hasEmployeeId(Integer.parseInt(commands2[i]))){
                             isValidId = false;
+                            break;
                         }
                     }
 
-                    numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
+                    if (isValidId) numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
 
                     String[] employeeArray = commands2;
 
                     boolean hasIndicatedItem = true;
 
-                    Scanner scanner3 = new Scanner(System.in);
+                    //Scanner scanner3 = new Scanner(System.in);
                     List<String[]> itemArrayList = new ArrayList<String[]>();
                     while (true) {
-                        String line3 = scanner3.nextLine();
+                        String line3 = scanner.nextLine();
                         if (line3 == "") break;
 
                         String[] commands3 = line3.split(" ");
-                        if(!controller.hasItem(clientId, Integer.parseInt(commands3[0]))){
-                            hasIndicatedItem = false;
+                        if(isValidId) {
+                            if (!controller.hasItem(clientId, Integer.parseInt(commands3[0]))) {
+                                hasIndicatedItem = false;
+                            }
+                            itemArrayList.add(commands3);
                         }
-                        itemArrayList.add(commands3);
                     }
 
                     if(!controller.hasClientId(clientId)){
@@ -172,7 +173,7 @@ public class CLI {
                     }
                     else{
                         int depositId = controller.registerItemDeposit(idArray, employeeArray, itemArrayList);
-                        System.out.println("Depósito registado com o identificador " + depositId);
+                        System.out.println("Depósito registado com o identificador " + depositId + ".");
                     }
 
 
@@ -185,8 +186,8 @@ public class CLI {
 
                     isValidId = true;
                     numberOfDrivers = 0;
-                    scanner2 = new Scanner(System.in);
-                    line2 = scanner2.nextLine();
+                    //scanner2 = new Scanner(System.in);
+                    line2 = scanner.nextLine();
 
                     commands2 = line2.split(" ");
 
@@ -201,40 +202,32 @@ public class CLI {
                     hasIndicatedItem = true;
                     boolean hasIndicatedItemQuantity = true;
 
-                    scanner3 = new Scanner(System.in);
+                    //scanner3 = new Scanner(System.in);
                     itemArrayList = new ArrayList<String[]>();
                     while (true) {
-                        String line3 = scanner3.nextLine();
+                        String line3 = scanner.nextLine();
                         if (line3 == "") break;
 
                         String[] commands3 = line3.split(" ");
 
-                        if(!controller.hasItem(clientId, Integer.parseInt(commands3[0]))){
+                        if (!controller.hasItem(clientId, Integer.parseInt(commands3[0])) && hasIndicatedItem) {
                             hasIndicatedItem = false;
-                        }
-                        else if(!controller.hasItemQuantity(clientId, Integer.parseInt(commands3[0]), Integer.parseInt(commands3[1]))){
+                        } else if (!controller.hasItemQuantity(clientId, Integer.parseInt(commands3[0]), Integer.parseInt(commands3[1])) && hasIndicatedItemQuantity) {
                             hasIndicatedItemQuantity = false;
                         }
 
-                        itemArrayList.add(commands3);
+                        if(isValidId && hasIndicatedItem && hasIndicatedItemQuantity){
+                            itemArrayList.add(commands3);
+                        }
                     }
 
-                    numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
+                    if(isValidId) numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
 
                     if(!controller.hasClientId(clientId)){
                         System.out.println("Cliente inexistente.");
                     }
-                    else if(controller.hasLocationId(locationId)){
+                    else if(!controller.hasLocationId(locationId)){
                         System.out.println("Local inexistente.");
-                    }
-                    else if(numberOfDrivers > 1 || !isValidId){
-                        System.out.println("Funcionário inexistente.");
-                    }
-                    else if(!controller.driverHasPermissionsForItem(clientId, employeeArray, itemArrayList) || (numberOfDrivers == 1)){
-                        System.out.println("Condutor sem permissões.");
-                    }
-                    else  if(!controller.loadersHavePermissionsForItem(clientId, employeeArray, itemArrayList)){
-                        System.out.println("Carregador sem permissões.");
                     }
                     else if(!hasIndicatedItem){
                         System.out.println("Item inexistente.");
@@ -242,9 +235,18 @@ public class CLI {
                     else if(!hasIndicatedItemQuantity){
                         System.out.println("Quantidade insuficiente.");
                     }
+                    else if(numberOfDrivers > 1 || !isValidId){
+                        System.out.println("Funcionário inexistente.");
+                    }
+                    else if(!controller.driverHasPermissionsForItem(clientId, employeeArray, itemArrayList) || (numberOfDrivers == 0)){
+                        System.out.println("Condutor sem permissões.");
+                    }
+                    else  if(!controller.loadersHavePermissionsForItem(clientId, employeeArray, itemArrayList)){
+                        System.out.println("Carregador sem permissões.");
+                    }
                     else{
                         int deliveryId = controller.registerItemDelivery(idArray, employeeArray, itemArrayList);
-                        System.out.println("Depósito registado com o identificador " + deliveryId);
+                        System.out.println("Entrega registada com o identificador " + deliveryId + ".");
                     }
 
                     break;
@@ -264,7 +266,7 @@ public class CLI {
                         System.out.println("Items:");
                         List<Item> items = controller.getClient(clientId).getItems();
                         for(Item item: items){
-                            System.out.println("  " + item.getId() + " (" + item.getQuantity() + ") " + item.getPermissions() + " " + item.getName());
+                            System.out.println("  " + item.getId() + " (" + item.getQuantity() + ") [" + item.getPermissions() + "] " + item.getName());
                         }
 
                         System.out.println("Depósitos:");
@@ -296,7 +298,7 @@ public class CLI {
                     else{
                         Item item = controller.getClient(clientId).getItem(itemId);
 
-                        System.out.println(item.getQuantity() + " " + item.getPermissions() + " " + item.getName());
+                        System.out.println(item.getQuantity() + " [" + item.getPermissionExtended() + "] " + item.getName());
 
                         System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getClient(clientId).getDeposits();
@@ -351,20 +353,20 @@ public class CLI {
                     else{
                         System.out.println(controller.getEmployee(employeeId).getName());
                         System.out.println(controller.getEmployee(employeeId).getCategory());
-                        System.out.println(controller.getEmployee(employeeId).getPermissions());
+                        System.out.println(controller.getEmployee(employeeId).getPermissionExtended());
 
                         System.out.println("Depósitos:");
                         List<Deposit> deposits = controller.getEmployee(employeeId).getDeposits();
 
                         for (Deposit deposit : deposits) {
-                            System.out.println("  " + deposit.getClientId() + " " + deposit.getId() + " " + deposit.getLocationName() + " " + deposit.getClientName());
+                            System.out.println("  " + deposit.getClientId() + " " + deposit.getId() + " (" + deposit.getLocationName() + ") " + deposit.getClientName());
                         }
 
                         System.out.println("Entregas:");
                         List<Delivery> deliveries = controller.getEmployee(employeeId).getDeliveries();
 
                         for (Delivery delivery : deliveries) {
-                            System.out.println("  " + delivery.getClientId() + " " + delivery.getId() + " " + delivery.getLocationName() + " " + delivery.getClientName());
+                            System.out.println("  " + delivery.getClientId() + " " + delivery.getId() + " (" + delivery.getLocationName() + ") " + delivery.getClientName());
                         }
 
                     }

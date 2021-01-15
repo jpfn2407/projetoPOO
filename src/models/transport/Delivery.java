@@ -48,8 +48,8 @@ public class Delivery implements Serializable {
         return client;
     }
 
-    public Location getLocationName() {
-        return location;
+    public String getLocationName() {
+        return location.getName();
     }
 
     public boolean hasItem(Integer itemId){

@@ -39,6 +39,18 @@ public class Employee implements Serializable {
         return this.permission;
     }
 
+    public String getPermissionExtended(){
+        if(this.permission.equals("S")){
+            return "Seguro";
+        }
+        else if(this.permission.equals("P")){
+            return "Perigoso";
+        }
+        else{
+            return "Normal";
+        }
+    }
+
     public List<Deposit> getDeposits() {
         return this.depositsList.getDeposits();
     }

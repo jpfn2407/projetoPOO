@@ -48,6 +48,18 @@ public class Item implements Serializable {
         return this.permissions[0];
     }
 
+    public String getPermissionExtended(){
+        if(this.permissions[0].equals("S")){
+            return "Seguro";
+        }
+        else if(this.permissions[0].equals("P")){
+            return "Perigoso";
+        }
+        else{
+            return "Normal";
+        }
+    }
+
     public String[] getPermissionsArray() {
         return permissions;
     }
