@@ -115,11 +115,13 @@ public class ControllerClass implements Controller, Serializable {
         boolean valid = false;
         for(int i=0; i<employeeArray.length; i++){
             if(this.isDriver(Integer.parseInt(employeeArray[i]))){
+
                 for (String[] id : itemArrayList){
                     if( this.employeeEqualsItemPermission(clientId, Integer.parseInt(id[0]), Integer.parseInt(employeeArray[i]))){
                         valid = true;
                     }
                 }
+
             }
         }
         return valid;
@@ -157,6 +159,7 @@ public class ControllerClass implements Controller, Serializable {
         }
         List<Employee> employeeList = this.employeeIdArrayToList(employeeArray);
         Deposit deposit = this.clientsList.getClient(clientId).registerDeposit(this.clientsList.getClient(clientId), this.locationsList.getLocation(locationId), employeeList, itemList);
+        this.clientsList.getClient(clientId).getManager().addDeposit(deposit);
         for(Employee employee : employeeList){
             employee.addDeposit(deposit);
         }
@@ -196,16 +199,15 @@ public class ControllerClass implements Controller, Serializable {
         for(Employee employee: employeeList){
             if(this.isDriver(employee.getId())){
                 driver = (Driver) employee;
-                employeeList.remove(employee);
                 break;
             }
         }
         Delivery delivery = this.clientsList.getClient(clientId).registerDelivery(this.clientsList.getClient(clientId), this.locationsList.getLocation(locationId), driver, employeeList, itemList);
+        this.clientsList.getClient(clientId).getManager().addDelivery(delivery);
         for(Employee employee : employeeList){
             employee.addDelivery(delivery);
         }
         return delivery.getId();
-
     }
 
     public void saveFile(String fileName) {
