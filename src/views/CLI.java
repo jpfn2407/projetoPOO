@@ -3,7 +3,6 @@ package views;
 import controllers.Controller;
 import controllers.ControllerClass;
 import models.employee.Employee;
-import models.employee.Loader;
 import models.transport.*;
 
 import java.util.*;
@@ -64,12 +63,10 @@ public class CLI {
                         itemName += commands[i] + " ";
                     }
 
-                    //Scanner scanner2 = new Scanner(System.in);
                     String line2 = scanner.nextLine();
 
                     if (!controller.hasClientId(clientId)) {
                         System.out.println("Cliente inexistente.");
-
                     } else {
                         boolean valid = true;
                         if (line2 == "") {
@@ -90,7 +87,6 @@ public class CLI {
                             }
                         }
                     }
-
                     break;
 
                 case "RL":
@@ -107,11 +103,9 @@ public class CLI {
                     clientId = Integer.parseInt(commands[1]);
                     int locationId = Integer.parseInt(commands[2]);
                     String[] idArray = {commands[1], commands[2]};
-
                     boolean isValidId = true;
                     int numberOfDrivers = 0;
 
-                    //Scanner scanner2 = new Scanner(System.in);
                     line2 = scanner.nextLine();
 
                     String[] commands2 = line2.split(" ");
@@ -126,10 +120,8 @@ public class CLI {
                     if (isValidId) numberOfDrivers = controller.getNumberOfDriversInThisArray(commands2);
 
                     String[] employeeArray = commands2;
-
                     boolean hasIndicatedItem = true;
 
-                    //Scanner scanner3 = new Scanner(System.in);
                     List<String[]> itemArrayList = new ArrayList<String[]>();
                     while (true) {
                         String line3 = scanner.nextLine();
@@ -160,18 +152,15 @@ public class CLI {
                         int depositId = controller.registerItemDeposit(idArray, employeeArray, itemArrayList);
                         System.out.println("Depósito registado com o identificador " + depositId + ".");
                     }
-
-
                     break;
 
                 case "RE":
                     clientId = Integer.parseInt(commands[1]);
                     locationId = Integer.parseInt(commands[2]);
                     idArray = new String[]{commands[1], commands[2]};
-
                     isValidId = true;
                     numberOfDrivers = 0;
-                    //scanner2 = new Scanner(System.in);
+
                     line2 = scanner.nextLine();
 
                     commands2 = line2.split(" ");
@@ -183,11 +172,9 @@ public class CLI {
                     }
 
                     employeeArray = commands2;
-
                     hasIndicatedItem = true;
                     boolean hasIndicatedItemQuantity = true;
 
-                    //scanner3 = new Scanner(System.in);
                     itemArrayList = new ArrayList<String[]>();
                     while (true) {
                         String line3 = scanner.nextLine();
